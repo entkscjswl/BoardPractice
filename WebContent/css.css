@@ -1,0 +1,39 @@
+	header{
+		background-color: #0054FF;
+		height : 100px;
+		margin : 0;
+		padding : 0;
+		text-align: center;
+		color : white;
+	}
+	menu{
+		background-color: #5F00FF;
+		height : 50px;
+		margin : 0;
+		padding : 0;
+		padding-left:30px;
+	}
+	menu a{
+		padding-left:10px;
+		color : white;
+		text-decoration: none;
+	}
+	section{
+		background-color: #BDBDBD;
+		height : 600px;
+		margin : 0;
+		padding : 10px;
+		text-align: center;
+	}
+	footer{
+		background-color: #0080ff;
+		height : 60px;
+		margin : 0;
+		padding : 10px;
+		text-align: center;
+	}
+	table{
+		margin-left:auto;
+		margin-right:auto;
+		width:700px;
+	}
