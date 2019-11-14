@@ -38,11 +38,12 @@
 			document.create.submit();
 		}
 	}
+
 </script>
 </head>
 <body>
 <% 
-	request.setCharacterEncoding("utf-8");				//	한글 지원되게 하려면 필요
+	request.setCharacterEncoding("utf-8");				//	한글 지원되게 하려면 필요, .do 같은 방식으로 할 때는 필수
 	MemberDAO dao = MemberDAO.getInstance();			//	DAO를 쓰기 위한 작업
 %>
 	<header>
@@ -62,11 +63,11 @@
 			<table border="1">
 				<tr>
 					<th width="250">회원번호(자동발생)</th>
-					<td align="left"><input type="text" value="<%=dao.count()%>" id="no" name="no"></td>	<!-- dao.count()는 회원번호를 자동으로 기입해주는 클래스 -->
+					<td align="left"><input type="text" value="<%=dao.count()%>" id="no" name="no" readonly="readonly"></td>	<!-- dao.count()는 회원번호를 자동으로 기입해주는 클래스//readonly는 읽기전용 텍스트박스 -->
 				</tr>
 				<tr>
 					<th>회원성명</th>
-					<td align="left"><input type="text" id="name" name="name"></td>
+					<td align="left"><input type="text" id="name" name="name" autofocus></td>
 				</tr>
 				<tr>
 					<th>회원전화</th>
@@ -92,6 +93,7 @@
 					<td colspan="2">
 						<input type="button" value="등록" onclick="checkInfo()">
 						<input type="button" onclick="location.href='search.jsp'" value="조회">
+						<input type="reset" value="다시입력" onclick="create.name.focus()">
 					</td>
 				</tr>
 			</table>

@@ -65,7 +65,7 @@
 			<table border="1">
 				<tr>
 					<th width="250">회원번호(자동발생)</th>
-					<td align="left"><input type="text" value="<%=vo.getCustno()%>" id="no" name="no"></td>	<!-- value 부분에 readOne에서 가져온 vo의 컬럼값들을 넣어준다. -->
+					<td align="left"><input type="text" value="<%=vo.getCustno()%>" id="no" name="no" readonly="readonly"></td>	<!-- value 부분에 readOne에서 가져온 vo의 컬럼값들을 넣어준다. -->
 				</tr>
 				<tr>
 					<th>회원성명</th>

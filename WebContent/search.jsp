@@ -57,6 +57,7 @@
 				%>
 				</td>
 				<td><%=m.getCity() %></td>
+			</tr>
 <%} %>				
 		</table>
 	</section>

@@ -1,3 +1,4 @@
+<!-- window - web browser에서 chrome을 선택해줘야지 실행했을때 크롬에 뜸 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>

@@ -1,16 +1,13 @@
 	header{
 		background-color: #0054FF;
-		height : 100px;
-		margin : 0;
-		padding : 0;
+		padding : 20px;
 		text-align: center;
 		color : white;
 	}
 	menu{
 		background-color: #5F00FF;
-		height : 50px;
 		margin : 0;
-		padding : 0;
+		padding : 20px;
 		padding-left:30px;
 	}
 	menu a{
@@ -20,14 +17,13 @@
 	}
 	section{
 		background-color: #BDBDBD;
-		height : 600px;
+		height: 600px;
 		margin : 0;
 		padding : 10px;
 		text-align: center;
 	}
 	footer{
 		background-color: #0080ff;
-		height : 60px;
 		margin : 0;
 		padding : 10px;
 		text-align: center;

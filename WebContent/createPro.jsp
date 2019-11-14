@@ -33,6 +33,7 @@
 <script>
 alert("회원가입에 성공하였습니다.");
 location.href="search.jsp";
+	//	history.go(-1); 은 이전 화면으로 가기 위한 명령어
 </script>
 </body>
 </html>
