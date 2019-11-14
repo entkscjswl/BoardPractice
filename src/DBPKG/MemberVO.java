@@ -1,4 +1,11 @@
+//	처음 시작할 때면 Servers에 Tomcat v8.5도 없고 Data Source Explorer에도 아무것도 없으니 수정을 해야함.
+//	window - preferences에서 server - runtime environment에서 8.5 - next - c밑에서 깔린 톰캣의 폴더 선택
+//	web - jsp,http,css - utf8
+//  general - workspace - other부분에 utf-8
 //	String형으로 모든 값을 줌. 그러므로 추후 MemberDAO에서 이에 따른 수정이 필요함.
+//	servers에서 우클릭 8.5 추가, 그리고 8.5를 더블클릭한 후 문제에 나왔있는 번호 (ex:8090)로 HTTP의 번호를 수정
+//	Data Source Explorer에서 new - Oracle - +마크에서 oracle thin driver 11선택 - 옆쪽의 jar에서 oraclexe의 product의 11.2.0의 server의 jdbc의 lib의 ojdbc6.jar을 추가
+//  그리고 옆쪽의 Properties를 선택해 Connection URL을 jdbc:oracle:thin:@localhost:1521:xe로 수정, Database Name 을 xe로 수정
 package DBPKG;
 
 public class MemberVO {

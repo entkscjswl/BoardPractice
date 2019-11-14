@@ -3,6 +3,8 @@ package DBPKG;
 import java.sql.*;
 import java.util.ArrayList;
 
+import sun.security.jca.GetInstance;
+
 public class MemberDAO {
 	private static MemberDAO instance = new MemberDAO();//	.jsp페이지에서 DB연동빈인 MemberDAO 클래스 메소드에 접근시 필요함.
 	public static MemberDAO getInstance() {				//	getInstance() 메소드로 MemberDAO 객체를 리턴.
@@ -23,7 +25,7 @@ public class MemberDAO {
 		}
 		return null;
 	}
-	
+
 	//회원등록
 	public void create(MemberVO vo) throws SQLException{
 		Connection conn = null; //SQL문을 실행하기 위해선 Connection이 필수
@@ -33,9 +35,9 @@ public class MemberDAO {
 		try {
 			conn = getConnection();	//	getConnection은 try밖에 있어도 되나(단, 위 Connection getConnection() 클래스가 따로 있을 때!) 통일감을 위해서 connection = null을 주고 try 안에 넣는 걸로 통일
 			sql = "insert into member_tbl_02 values(?,?,?,?,to_date(?,'yyyymmdd'),?,?)";	//	순서 중요!!, to_date는 sqlDeveloper에서 date값을 준 것을 MemberVO에서는 string값을 주기 때문
-			pstmt = conn.prepareStatement(sql);								// 이 구문은 sql을 등록하는 부분. 그러므로 이 전에 sql 문장을 적어야함. sql 적고 pstmt
-			pstmt.setInt(1, Integer.parseInt(vo.getCustno()));				//	여기서 1,2,3,4 숫자들은 sql문에 들어가는 ?를 차례로 적은것임. 그러므로 순서에 유의하여야 한다.	//	pstmt.setXXX로 값을 할당
-			pstmt.setString(2, vo.getCustname());							//	윗줄의 Integer.parseInt는 String형인 Custno를 Int형으로 바꿔주는 과정이다.
+			pstmt = conn.prepareStatement(sql);						// 이 구문은 sql을 등록하는 부분. 그러므로 이 전에 sql 문장을 적어야함. sql 적고 pstmt
+			pstmt.setInt(1, Integer.parseInt(vo.getCustno()));		//	여기서 1,2,3,4 숫자들은 sql문에 들어가는 ?를 차례로 적은것임. 그러므로 순서에 유의하여야 한다.	//	pstmt.setXXX로 값을 할당
+			pstmt.setString(2, vo.getCustname());					//	윗줄의 Integer.parseInt는 String형인 Custno를 Int형으로 바꿔주는 과정이다.
 			pstmt.setString(3, vo.getPhone());
 			pstmt.setString(4, vo.getAddress());
 			pstmt.setString(5, vo.getJoindate());
@@ -57,7 +59,7 @@ public class MemberDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-		String custno = null;
+		String custno = null;	//	return 하는 게 string 형식으로 바로 쓸거니깐 string custno 생성
 		try {
 			conn = getConnection();
 			sql = "select max(custno)+1 from member_tbl_02";
@@ -76,7 +78,7 @@ public class MemberDAO {
 		return custno;
 	}
 	
-	// search.jsp에서 쓰이는 클래스
+	// search.jsp에서 쓰이는 클래스 + delete.jsp 에서도 목록을 보여주기 위해 사용
 	public ArrayList<MemberVO> memberList() throws SQLException{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -101,7 +103,7 @@ public class MemberDAO {
 				mvo.add(vo);	//	배열 mvo안에 하나를 담고 다음으로 넘어가 다시 반복
 			}
 		}catch (Exception e) {
-			
+			e.printStackTrace();
 		}finally {
 			if(rs!=null)rs.close();
 			if(pstmt!=null)pstmt.close();
@@ -110,6 +112,7 @@ public class MemberDAO {
 		return mvo;
 	}
 	
+	//searchSale.jsp에서 두 테이블을 select문으로 보여주기 위한 부분
 	public ArrayList<MemberVO> saleList() throws SQLException{	//	MemberVO 타입의 리스트 클래스
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -118,7 +121,10 @@ public class MemberDAO {
 		ArrayList<MemberVO> mvo = new ArrayList<MemberVO>();	//	mvo 안에 MemberVO 타입의 리스트를 담을 예정
 		try {
 			conn = getConnection();
-			sql = "select a.custno,a.custname,a.grade,sum(b.price) from member_tbl_02 a INNER JOIN money_tbl_02 b ON a.custno=b.custno group by a.custno,a.custname,a.grade";
+			//	sql문 어려우니깐 알아두기
+			sql = "select a.custno,a.custname,a.grade,sum(b.price) as totalprice "
+					+ " from member_tbl_02 a JOIN money_tbl_02 b ON a.custno=b.custno "
+					+ " group by a.custno,a.custname,a.grade order by totalprice desc";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {					//	select문에 해당하는 데이터베이스의 행(레코드)이 더 없을때까지 수행한다.
@@ -139,7 +145,7 @@ public class MemberDAO {
 		return mvo;	//	행들로 채워진 리스트 mvo를 리턴함.
 	}
 	
-	
+	//updatePro.jsp에서 쓰임
 	public void update(MemberVO vo) throws SQLException{	//	updatePro.jsp에서 가져온 vo값을 넣어준다. 
 		Connection conn = getConnection();
 		PreparedStatement pstmt = null;
@@ -192,6 +198,24 @@ public class MemberDAO {
 			if(rs!=null)rs.close();
 		}
 		return vo;			//	MemberVO 타입의 변수를 쓰기 위해서 리턴해준다.
+	}
+	
+	public void delete(String del) throws SQLException{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		try {
+			conn = getConnection();
+			sql = "delete from member_tbl_02 where custno=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, del);
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(conn!=null)conn.close();
+			if(pstmt!=null)pstmt.close();
+		}	
 	}
 }
 
